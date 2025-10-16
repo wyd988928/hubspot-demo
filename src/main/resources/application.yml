@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: hubspot-demo
+
+server:
+  port: 8081
+
+# HubSpot API 配置
+hubspot:
+  api:
+    base-url: https://api.hubapi.com
+    api-key: ${HUBSPOT-API-KEY:w8324828782734}
+    timeout: 30000
+    connect-timeout: 5000
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.example.hubspotdemo: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
