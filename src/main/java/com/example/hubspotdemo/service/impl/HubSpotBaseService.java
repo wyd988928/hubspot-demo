@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -252,5 +253,39 @@ public abstract class HubSpotBaseService {
     protected <T> HubSpotResponse<T> getPaginatedData(String endpoint, 
                                                      ParameterizedTypeReference<HubSpotResponse<T>> responseType) {
         return get(endpoint, responseType);
+    }
+    
+    /**
+     * 获取对象的自定义属性列表
+     * 
+     * @param objectType 对象类型（如contacts、companies、deals等）
+     * @param responseType 响应类型引用
+     * @param <T> 响应数据类型
+     * @return 属性列表
+     */
+    protected <T> List<Map<String, Object>> getObjectProperties(String objectType, ParameterizedTypeReference<List<Map<String, Object>>> responseType) {
+        String endpoint = "/crm/v3/properties/" + objectType;
+        String url = buildUrl(endpoint);
+        logger.debug("获取对象属性: {}, URL: {}", objectType, url);
+        
+        try {
+            ResponseEntity<List<Map<String, Object>>> responseEntity = restTemplate.exchange(
+                    url, HttpMethod.GET, new HttpEntity<>(createHeaders()), responseType);
+            logger.debug("获取对象属性成功: {}, 状态码: {}", objectType, responseEntity.getStatusCodeValue());
+            return responseEntity.getBody();
+        } catch (HttpStatusCodeException e) {
+            handleApiException(e, "GET", url);
+            return Collections.emptyList(); // 永远不会到达这里，handleApiException 会抛出异常
+        }
+    }
+    
+    /**
+     * 获取对象的自定义属性列表（简化版本）
+     * 
+     * @param objectType 对象类型（如contacts、companies、deals等）
+     * @return 属性列表
+     */
+    protected List<Map<String, Object>> getObjectProperties(String objectType) {
+        return getObjectProperties(objectType, new ParameterizedTypeReference<List<Map<String, Object>>>() {});
     }
 }

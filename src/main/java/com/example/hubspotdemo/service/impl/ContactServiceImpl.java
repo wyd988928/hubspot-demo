@@ -1,6 +1,7 @@
 package com.example.hubspotdemo.service.impl;
 
 import com.example.hubspotdemo.model.Contact;
+import com.example.hubspotdemo.model.Deal;
 import com.example.hubspotdemo.model.HubSpotResponse;
 import com.example.hubspotdemo.service.ContactService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,5 +123,20 @@ public class ContactServiceImpl extends HubSpotBaseService implements ContactSer
         
         return post(CONTACTS_SEARCH_ENDPOINT, requestBody, 
                 new ParameterizedTypeReference<HubSpotResponse<Contact>>() {});
+    }
+
+    @Override
+    public HubSpotResponse<Deal> getDealsByContactId(String contactId) {
+        logger.info("根据联系人ID获取相关交易: {}", contactId);
+        
+        String endpoint = "/crm/v3/objects/contacts/" + contactId + "/associations/deals";
+        return getPaginatedData(endpoint, 
+                new ParameterizedTypeReference<HubSpotResponse<Deal>>() {});
+    }
+    
+    @Override
+    public List<Map<String, Object>> getContactProperties() {
+        logger.info("获取联系人自定义属性列表");
+        return getObjectProperties("contacts");
     }
 }

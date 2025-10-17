@@ -155,4 +155,10 @@ public class DealServiceImpl extends HubSpotBaseService implements DealService {
         return getPaginatedData(urlBuilder.toString(), 
                 new ParameterizedTypeReference<HubSpotResponse<Deal>>() {});
     }
+    
+    @Override
+    public List<Map<String, Object>> getDealProperties() {
+        logger.info("获取交易自定义属性列表");
+        return getObjectProperties("deals");
+    }
 }

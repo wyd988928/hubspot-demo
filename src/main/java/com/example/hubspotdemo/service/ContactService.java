@@ -1,6 +1,7 @@
 package com.example.hubspotdemo.service;
 
 import com.example.hubspotdemo.model.Contact;
+import com.example.hubspotdemo.model.Deal;
 import com.example.hubspotdemo.model.HubSpotResponse;
 import java.util.List;
 import java.util.Map;
@@ -71,4 +72,19 @@ public interface ContactService {
      * @return 联系人列表响应
      */
     HubSpotResponse<Contact> searchContacts(Object filterGroups, List<String> properties, int limit);
+    
+    /**
+     * 根据联系人ID获取相关交易
+     * 
+     * @param contactId 联系人ID
+     * @return 交易列表响应
+     */
+    HubSpotResponse<Deal> getDealsByContactId(String contactId);
+    
+    /**
+     * 获取联系人的自定义属性列表
+     * 
+     * @return 属性列表
+     */
+    List<Map<String, Object>> getContactProperties();
 }

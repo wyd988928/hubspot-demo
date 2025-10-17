@@ -80,4 +80,11 @@ public interface DealService {
      * @return 交易列表响应
      */
     HubSpotResponse<Deal> getDealsByContactId(String contactId, List<String> properties);
+    
+    /**
+     * 获取交易的自定义属性列表
+     * 
+     * @return 属性列表
+     */
+    List<Map<String, Object>> getDealProperties();
 }
