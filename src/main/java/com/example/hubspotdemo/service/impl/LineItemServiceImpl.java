@@ -1,5 +1,6 @@
 package com.example.hubspotdemo.service.impl;
 
+import com.example.hubspotdemo.cache.HubSpotPropertiesCache;
 import com.example.hubspotdemo.config.HubSpotConfig;
 import com.example.hubspotdemo.model.HubSpotResponse;
 import com.example.hubspotdemo.model.LineItem;
@@ -19,8 +20,9 @@ import java.util.Map;
 public class LineItemServiceImpl extends GenericHubSpotServiceImpl<LineItem> implements LineItemService {
 
     @Autowired
-    public LineItemServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper) {
-        super(restTemplate, hubSpotConfig, objectMapper, "line_items", LineItem.class);
+    public LineItemServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper,
+                            HubSpotPropertiesCache propertiesCache) {
+        super(restTemplate, hubSpotConfig, objectMapper, "line_items", LineItem.class, propertiesCache);
     }
 
     /**

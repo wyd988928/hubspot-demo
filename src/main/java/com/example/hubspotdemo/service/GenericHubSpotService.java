@@ -1,6 +1,7 @@
 package com.example.hubspotdemo.service;
 
 import com.example.hubspotdemo.model.HubSpotObject;
+import com.example.hubspotdemo.model.HubSpotPropertiesResponse;
 import com.example.hubspotdemo.model.HubSpotResponse;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public interface GenericHubSpotService<T extends HubSpotObject> {
     /**
      * 获取对象的自定义属性列表
      * 
-     * @return 属性列表
+     * @return 属性列表响应
      */
-    List<Map<String, Object>> getObjectProperties();
+    HubSpotPropertiesResponse getObjectProperties();
 }

@@ -1,5 +1,6 @@
 package com.example.hubspotdemo.service.impl;
 
+import com.example.hubspotdemo.cache.HubSpotPropertiesCache;
 import com.example.hubspotdemo.config.HubSpotConfig;
 import com.example.hubspotdemo.model.Contact;
 import com.example.hubspotdemo.model.Deal;
@@ -18,8 +19,9 @@ import org.springframework.web.client.RestTemplate;
 public class ContactServiceImpl extends GenericHubSpotServiceImpl<Contact> implements ContactService {
 
     @Autowired
-    public ContactServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper) {
-        super(restTemplate, hubSpotConfig, objectMapper, "contacts", Contact.class);
+    public ContactServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper,
+                            HubSpotPropertiesCache propertiesCache) {
+        super(restTemplate, hubSpotConfig, objectMapper, "contacts", Contact.class, propertiesCache);
     }
 
     /**

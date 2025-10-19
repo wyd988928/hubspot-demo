@@ -1,5 +1,6 @@
 package com.example.hubspotdemo.service.impl;
 
+import com.example.hubspotdemo.cache.HubSpotPropertiesCache;
 import com.example.hubspotdemo.config.HubSpotConfig;
 import com.example.hubspotdemo.model.Company;
 import com.example.hubspotdemo.model.HubSpotResponse;
@@ -22,8 +23,9 @@ import java.util.Map;
 public class CompanyServiceImpl extends GenericHubSpotServiceImpl<Company> implements CompanyService {
 
     @Autowired
-    public CompanyServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper) {
-        super(restTemplate, hubSpotConfig, objectMapper, "companies", Company.class);
+    public CompanyServiceImpl(RestTemplate restTemplate, HubSpotConfig hubSpotConfig, ObjectMapper objectMapper,
+                           HubSpotPropertiesCache propertiesCache) {
+        super(restTemplate, hubSpotConfig, objectMapper, "companies", Company.class, propertiesCache);
     }
 
     @Override

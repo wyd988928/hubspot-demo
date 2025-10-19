@@ -3,8 +3,11 @@ package com.example.hubspotdemo.controller;
 import com.example.hubspotdemo.model.Contact;
 import com.example.hubspotdemo.model.Company;
 import com.example.hubspotdemo.model.Deal;
+import com.example.hubspotdemo.model.HubSpotObject;
+import com.example.hubspotdemo.model.HubSpotPropertiesResponse;
 import com.example.hubspotdemo.model.HubSpotResponse;
 import com.example.hubspotdemo.model.LineItem;
+import com.example.hubspotdemo.cache.HubSpotPropertiesCache;
 import com.example.hubspotdemo.model.Product;
 import com.example.hubspotdemo.service.ContactService;
 import com.example.hubspotdemo.service.CompanyService;
@@ -15,8 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * HubSpot API 控制器，提供 REST 接口来访问 HubSpot 功能
@@ -30,16 +36,22 @@ public class HubSpotController {
     private final CompanyService companyService;
     private final ProductService productService;
     private final LineItemService lineItemService;
+    private final HubSpotPropertiesCache propertiesCache;
 
     @Autowired
-    public HubSpotController(ContactService contactService, DealService dealService, 
-                           CompanyService companyService, ProductService productService, 
-                           LineItemService lineItemService) {
+    public HubSpotController(
+            ContactService contactService,
+            DealService dealService,
+            CompanyService companyService,
+            ProductService productService,
+            LineItemService lineItemService,
+            HubSpotPropertiesCache propertiesCache) {
         this.contactService = contactService;
         this.dealService = dealService;
         this.companyService = companyService;
         this.productService = productService;
         this.lineItemService = lineItemService;
+        this.propertiesCache = propertiesCache;
     }
 
     // 联系人相关接口
@@ -336,5 +348,40 @@ public class HubSpotController {
             @PathVariable("id") String dealId) {
         HubSpotResponse<Map<String, Object>> response = lineItemService.getDealLineItems(dealId);
         return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * 获取指定实体的属性信息
+     * @param objectType 实体类型，可以是：contacts, deals, companies, products, line-items
+     * @return 实体的属性信息
+     */
+    @GetMapping("/properties/{objectType}")
+    public ResponseEntity<HubSpotPropertiesResponse> getProperties(
+            @PathVariable String objectType) {
+        // 使用缓存获取属性列表
+        HubSpotPropertiesResponse propertiesResponse = propertiesCache.getPropertiesByType(objectType);
+        return ResponseEntity.ok(propertiesResponse);
+    }
+    
+    /**
+     * 刷新指定对象类型的属性缓存
+     * @param objectType 对象类型
+     * @return 刷新后的属性列表响应
+     */
+    @PostMapping("/properties/{objectType}/refresh")
+    public ResponseEntity<HubSpotPropertiesResponse> refreshPropertiesCache(
+            @PathVariable String objectType) {
+        HubSpotPropertiesCache.ObjectType type = HubSpotPropertiesCache.ObjectType.fromValue(objectType);
+        HubSpotPropertiesResponse propertiesResponse = propertiesCache.refreshCache(type);
+        return ResponseEntity.ok(propertiesResponse);
+    }
+    
+    /**
+     * 清除所有属性缓存
+     */
+    @DeleteMapping("/properties/cache/clear")
+    public ResponseEntity<Void> clearAllPropertiesCache() {
+        propertiesCache.clearAllCache();
+        return ResponseEntity.ok().build();
     }
 }
