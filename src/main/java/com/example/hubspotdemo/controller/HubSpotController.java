@@ -48,7 +48,7 @@ public class HubSpotController {
     public ResponseEntity<HubSpotResponse<Contact>> getAllContacts(
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
-        HubSpotResponse<Contact> response = contactService.getAllContacts(properties, limit);
+        HubSpotResponse<Contact> response = contactService.getAllObjects(properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -57,19 +57,19 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam String after) {
-        HubSpotResponse<Contact> response = contactService.getContactsWithPagination(properties, limit, after);
+        HubSpotResponse<Contact> response = contactService.getObjectsWithPagination(properties, limit, after);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/contacts/{id}")
     public ResponseEntity<Contact> getContactById(@PathVariable("id") String contactId) {
-        Contact contact = contactService.getContactById(contactId);
+        Contact contact = contactService.getObjectById(contactId);
         return ResponseEntity.ok(contact);
     }
 
     @PostMapping("/contacts")
     public ResponseEntity<Contact> createContact(@RequestBody Map<String, Object> properties) {
-        Contact contact = contactService.createContact(properties);
+        Contact contact = contactService.createObject(properties);
         return ResponseEntity.ok(contact);
     }
 
@@ -77,13 +77,13 @@ public class HubSpotController {
     public ResponseEntity<Contact> updateContact(
             @PathVariable("id") String contactId,
             @RequestBody Map<String, Object> properties) {
-        Contact contact = contactService.updateContact(contactId, properties);
+        Contact contact = contactService.updateObject(contactId, properties);
         return ResponseEntity.ok(contact);
     }
 
     @DeleteMapping("/contacts/{id}")
     public ResponseEntity<Boolean> deleteContact(@PathVariable("id") String contactId) {
-        boolean deleted = contactService.deleteContact(contactId);
+        boolean deleted = contactService.deleteObject(contactId);
         return ResponseEntity.ok(deleted);
     }
 
@@ -93,7 +93,7 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
         Object filterGroups = searchRequest.get("filterGroups");
-        HubSpotResponse<Contact> response = contactService.searchContacts(filterGroups, properties, limit);
+        HubSpotResponse<Contact> response = contactService.searchObjects(filterGroups, properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -110,7 +110,7 @@ public class HubSpotController {
     public ResponseEntity<HubSpotResponse<Deal>> getAllDeals(
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
-        HubSpotResponse<Deal> response = dealService.getAllDeals(properties, limit);
+        HubSpotResponse<Deal> response = dealService.getAllObjects(properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -119,19 +119,19 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam String after) {
-        HubSpotResponse<Deal> response = dealService.getDealsWithPagination(properties, limit, after);
+        HubSpotResponse<Deal> response = dealService.getObjectsWithPagination(properties, limit, after);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/deals/{id}")
     public ResponseEntity<Deal> getDealById(@PathVariable("id") String dealId) {
-        Deal deal = dealService.getDealById(dealId);
+        Deal deal = dealService.getObjectById(dealId);
         return ResponseEntity.ok(deal);
     }
 
     @PostMapping("/deals")
     public ResponseEntity<Deal> createDeal(@RequestBody Map<String, Object> properties) {
-        Deal deal = dealService.createDeal(properties);
+        Deal deal = dealService.createObject(properties);
         return ResponseEntity.ok(deal);
     }
 
@@ -139,13 +139,13 @@ public class HubSpotController {
     public ResponseEntity<Deal> updateDeal(
             @PathVariable("id") String dealId,
             @RequestBody Map<String, Object> properties) {
-        Deal deal = dealService.updateDeal(dealId, properties);
+        Deal deal = dealService.updateObject(dealId, properties);
         return ResponseEntity.ok(deal);
     }
 
     @DeleteMapping("/deals/{id}")
     public ResponseEntity<Boolean> deleteDeal(@PathVariable("id") String dealId) {
-        boolean deleted = dealService.deleteDeal(dealId);
+        boolean deleted = dealService.deleteObject(dealId);
         return ResponseEntity.ok(deleted);
     }
 
@@ -155,7 +155,7 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
         Object filterGroups = searchRequest.get("filterGroups");
-        HubSpotResponse<Deal> response = dealService.searchDeals(filterGroups, properties, limit);
+        HubSpotResponse<Deal> response = dealService.searchObjects(filterGroups, properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -165,7 +165,7 @@ public class HubSpotController {
     public ResponseEntity<HubSpotResponse<Company>> getAllCompanies(
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
-        HubSpotResponse<Company> response = companyService.getAllCompanies(properties, limit);
+        HubSpotResponse<Company> response = companyService.getAllObjects(properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -174,19 +174,19 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam String after) {
-        HubSpotResponse<Company> response = companyService.getCompaniesWithPagination(properties, limit, after);
+        HubSpotResponse<Company> response = companyService.getObjectsWithPagination(properties, limit, after);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/companies/{id}")
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") String companyId) {
-        Company company = companyService.getCompanyById(companyId);
+        Company company = companyService.getObjectById(companyId);
         return ResponseEntity.ok(company);
     }
 
     @PostMapping("/companies")
     public ResponseEntity<Company> createCompany(@RequestBody Map<String, Object> properties) {
-        Company company = companyService.createCompany(properties);
+        Company company = companyService.createObject(properties);
         return ResponseEntity.ok(company);
     }
 
@@ -194,13 +194,13 @@ public class HubSpotController {
     public ResponseEntity<Company> updateCompany(
             @PathVariable("id") String companyId,
             @RequestBody Map<String, Object> properties) {
-        Company company = companyService.updateCompany(companyId, properties);
+        Company company = companyService.updateObject(companyId, properties);
         return ResponseEntity.ok(company);
     }
 
     @DeleteMapping("/companies/{id}")
     public ResponseEntity<Boolean> deleteCompany(@PathVariable("id") String companyId) {
-        boolean deleted = companyService.deleteCompany(companyId);
+        boolean deleted = companyService.deleteObject(companyId);
         return ResponseEntity.ok(deleted);
     }
 
@@ -210,7 +210,7 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
         Object filterGroups = searchRequest.get("filterGroups");
-        HubSpotResponse<Company> response = companyService.searchCompanies(filterGroups, properties, limit);
+        HubSpotResponse<Company> response = companyService.searchObjects(filterGroups, properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -227,7 +227,7 @@ public class HubSpotController {
     public ResponseEntity<HubSpotResponse<Product>> getAllProducts(
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
-        HubSpotResponse<Product> response = productService.getAllProducts(properties, limit);
+        HubSpotResponse<Product> response = productService.getAllObjects(properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -236,19 +236,19 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam String after) {
-        HubSpotResponse<Product> response = productService.getProductsWithPagination(properties, limit, after);
+        HubSpotResponse<Product> response = productService.getObjectsWithPagination(properties, limit, after);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") String productId) {
-        Product product = productService.getProductById(productId);
+        Product product = productService.getObjectById(productId);
         return ResponseEntity.ok(product);
     }
 
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody Map<String, Object> properties) {
-        Product product = productService.createProduct(properties);
+        Product product = productService.createObject(properties);
         return ResponseEntity.ok(product);
     }
 
@@ -256,13 +256,13 @@ public class HubSpotController {
     public ResponseEntity<Product> updateProduct(
             @PathVariable("id") String productId,
             @RequestBody Map<String, Object> properties) {
-        Product product = productService.updateProduct(productId, properties);
+        Product product = productService.updateObject(productId, properties);
         return ResponseEntity.ok(product);
     }
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Boolean> deleteProduct(@PathVariable("id") String productId) {
-        boolean deleted = productService.deleteProduct(productId);
+        boolean deleted = productService.deleteObject(productId);
         return ResponseEntity.ok(deleted);
     }
 
@@ -272,7 +272,7 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
         Object filterGroups = searchRequest.get("filterGroups");
-        HubSpotResponse<Product> response = productService.searchProducts(filterGroups, properties, limit);
+        HubSpotResponse<Product> response = productService.searchObjects(filterGroups, properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -282,7 +282,7 @@ public class HubSpotController {
     public ResponseEntity<HubSpotResponse<LineItem>> getAllLineItems(
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
-        HubSpotResponse<LineItem> response = lineItemService.getAllLineItems(properties, limit);
+        HubSpotResponse<LineItem> response = lineItemService.getAllObjects(properties, limit);
         return ResponseEntity.ok(response);
     }
 
@@ -291,19 +291,19 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam String after) {
-        HubSpotResponse<LineItem> response = lineItemService.getLineItemsWithPagination(properties, limit, after);
+        HubSpotResponse<LineItem> response = lineItemService.getObjectsWithPagination(properties, limit, after);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/line-items/{id}")
     public ResponseEntity<LineItem> getLineItemById(@PathVariable("id") String lineItemId) {
-        LineItem lineItem = lineItemService.getLineItemById(lineItemId);
+        LineItem lineItem = lineItemService.getObjectById(lineItemId);
         return ResponseEntity.ok(lineItem);
     }
 
     @PostMapping("/line-items")
     public ResponseEntity<LineItem> createLineItem(@RequestBody Map<String, Object> properties) {
-        LineItem lineItem = lineItemService.createLineItem(properties);
+        LineItem lineItem = lineItemService.createObject(properties);
         return ResponseEntity.ok(lineItem);
     }
 
@@ -311,13 +311,13 @@ public class HubSpotController {
     public ResponseEntity<LineItem> updateLineItem(
             @PathVariable("id") String lineItemId,
             @RequestBody Map<String, Object> properties) {
-        LineItem lineItem = lineItemService.updateLineItem(lineItemId, properties);
+        LineItem lineItem = lineItemService.updateObject(lineItemId, properties);
         return ResponseEntity.ok(lineItem);
     }
 
     @DeleteMapping("/line-items/{id}")
     public ResponseEntity<Boolean> deleteLineItem(@PathVariable("id") String lineItemId) {
-        boolean deleted = lineItemService.deleteLineItem(lineItemId);
+        boolean deleted = lineItemService.deleteObject(lineItemId);
         return ResponseEntity.ok(deleted);
     }
 
@@ -327,7 +327,7 @@ public class HubSpotController {
             @RequestParam(required = false) List<String> properties,
             @RequestParam(defaultValue = "10") int limit) {
         Object filterGroups = searchRequest.get("filterGroups");
-        HubSpotResponse<LineItem> response = lineItemService.searchLineItems(filterGroups, properties, limit);
+        HubSpotResponse<LineItem> response = lineItemService.searchObjects(filterGroups, properties, limit);
         return ResponseEntity.ok(response);
     }
 
