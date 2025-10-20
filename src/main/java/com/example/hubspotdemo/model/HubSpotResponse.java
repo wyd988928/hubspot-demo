@@ -24,6 +24,11 @@ public class HubSpotResponse<T> {
     private String message;
 
     /**
+     * 记录数
+     */
+    private Integer total;
+
+    /**
      * 单个结果
      */
     private T result;
