@@ -106,9 +106,32 @@ public abstract class GenericHubSpotServiceImpl<T extends HubSpotObject> extends
     @Override
     public T getObjectById(String objectId) {
         logger.info("获取 {} ID: {}", baseEndpoint.substring(baseEndpoint.lastIndexOf('/') + 1), objectId);
-        
+        String objectTypeName = baseEndpoint.substring(baseEndpoint.lastIndexOf('/') + 1);
+
+        // 如果properties为空，则从缓存中获取所有属性
+        List<String> effectiveProperties = null;
+        logger.debug("属性列表为空，从缓存中获取所有可用属性");
+        HubSpotPropertiesResponse propertiesResponse = propertiesCache.getPropertiesByType(objectTypeName);
+        if (propertiesResponse != null && propertiesResponse.getResults() != null) {
+            effectiveProperties = propertiesResponse.getResults().stream()
+                    .map(HubSpotProperty::getName)
+                    .toList();
+            logger.debug("从缓存中获取到 {} 个属性", effectiveProperties.size());
+        }
+
         String endpoint = baseEndpoint + "/" + objectId;
-        return get(endpoint, objectType);
+        StringBuilder urlBuilder = new StringBuilder(endpoint);
+
+        if (effectiveProperties != null && !effectiveProperties.isEmpty()) {
+            urlBuilder.append("?properties=");
+            for (int i = 0; i < effectiveProperties.size(); i++) {
+                urlBuilder.append(effectiveProperties.get(i));
+                if (i < effectiveProperties.size() - 1) {
+                    urlBuilder.append(",");
+                }
+            }
+        }
+        return get(urlBuilder.toString(), objectType);
     }
 
     @Override
